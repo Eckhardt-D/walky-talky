@@ -1,4 +1,4 @@
-const { Users } = require('./server/src/controllers/users');
+const { Users } = require('../server/src/controllers/users');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 

@@ -4,9 +4,38 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="./src/tailwind.min.js"></script>
   <title>Walky Talky</title>
 </head>
-<body>
-  <h1>Discussion</h1>
+<body class=" bg-slate-300">
+  <div class="max-w-3xl mx-auto bg-white min-h-screen p-10">
+    <h1 class="text-3xl font-bold">Discussion</h1>
+
+    <form data-post-form class="mt-5">
+      <section class="flex">
+        <input
+          class="px-2 py-3 border border-slate-300 rounded-md w-10/12 mr-3"
+          placeholder="What are your thoughts?"
+          type="text"
+        >
+        <button
+          class="
+          bg-purple-500
+          text-white
+          rounded-md
+          w-2/12
+          hover:bg-purple-600
+          transform-gpu 
+          ease-in-out
+          transition-all
+          duration-300"
+        >
+          Comment
+        </button>
+      </section>
+    </form>
+  </div>
+  
+  <script src="./index.mjs" type="module"></script>
 </body>
 </html>
