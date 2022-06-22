@@ -4,7 +4,8 @@
   "description": "Let's discuss",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "start": "node ./server"
   },
   "keywords": [],
   "author": "Eckhardt-D",
