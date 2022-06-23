@@ -106,10 +106,13 @@ export class Posts {
       const domContent = createDOMFromHTML(html);
       const contentContainer = domContent.querySelector('main[data-post-content] > p');
       const upvoteButton = domContent.querySelector('*[data-upvote-btn]');
+      const replyButton = domContent.querySelector('*[data-reply-btn]');
       contentContainer.innerText = post.content.trim();
 
-      if (post.author === this.#user.id) {
+      // Hide actions for own post.
+      if (post.authorId === this.#user.id) {
         upvoteButton.style.display = 'none';
+        replyButton.style.display = 'none';
       }
 
       this.#registerUpvoteClickEvent(upvoteButton, post);
