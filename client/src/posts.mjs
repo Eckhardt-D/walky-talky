@@ -1,4 +1,5 @@
 import { createDOMFromHTML } from "./helpers.mjs";
+import { createComponent } from "../upvotes.mjs";
 
 export class Posts {
   #postInterval;
@@ -51,8 +52,8 @@ export class Posts {
           
           </p>
         </main>
-        <footer data-post-footer class="flex items-center mt-3">
-          <p data-upvote-btn class="text-sm font-regular cursor-pointer ${hasUpvoted ? 'text-purple-500' : ''}">&#8679; Upvote</p>
+        <footer data-post-footer="${id}" class="flex items-center mt-3">
+          <div data-upvote-btn class="text-sm font-regular cursor-pointer"></div>
           <p data-reply-btn class="text-sm ml-5 font-medium cursor-pointer">Reply</p>
         </footer>
       </section>
@@ -79,21 +80,6 @@ export class Posts {
     postTimeContainer.innerText = `${timeSinceCreated} min ago`;
   }
 
-  #registerUpvoteClickEvent(el, post) {
-    el.addEventListener('click', async () => {
-      if(post.authorId === this.#user.id) return;
-      el.classList.add('text-gray-400')
-
-      await this.upvotePost({
-        authorId: post.authorId,
-        postId: post.id,
-        upvoterId: this.#user.id,
-      });
-
-      el.classList.remove('text-gray-400');
-    });
-  }
-
   #render() {
     const posts = this.#posts.sort(
       (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
@@ -111,12 +97,13 @@ export class Posts {
 
       // Hide actions for own post.
       if (post.authorId === this.#user.id) {
-        upvoteButton.style.display = 'none';
         replyButton.style.display = 'none';
       }
 
-      this.#registerUpvoteClickEvent(upvoteButton, post);
       this.#containerEl.appendChild(domContent);
+
+      // Use react component for upvotes
+      createComponent(upvoteButton, post, this.#user, this);
     })
   }
 

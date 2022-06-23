@@ -8,7 +8,10 @@ const postRoutes = require('./routes/posts');
 const app = express();
 
 // Middlewares
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: false,
+}));
+
 app.use(express.json());
 
 // Route definitions
