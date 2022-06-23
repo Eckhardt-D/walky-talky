@@ -3,6 +3,7 @@ const helmet = require("helmet");
 
 // Route imports
 const userRoutes = require('./routes/users');
+const postRoutes = require('./routes/posts');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Route definitions
 app.use('/api/users', userRoutes);
+app.use('/api/posts', postRoutes);
 
 exports.createServer = (staticPath) => {
   return new Promise((resolve) => {

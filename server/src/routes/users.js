@@ -13,7 +13,7 @@ router.get('/', async (_, res) => {
       error: null,
     })
   } catch (error) {
-    return ({
+    res.json({
       data: null,
       error: error.message,
     })

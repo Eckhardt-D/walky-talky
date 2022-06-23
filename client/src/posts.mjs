@@ -5,14 +5,16 @@ export class Posts {
   #containerEl;
   #posts = [];
   #user;
+  #app;
 
-  constructor(user, containerEl) {
-    if (containerEl == null || !user) {
+  constructor(app, containerEl) {
+    if (containerEl == null || !app) {
       throw new Error('Posts controller requires a container element and user.')
     }
 
     this.#containerEl = containerEl;
-    this.#user = user;
+    this.#app = app;
+    this.#user = app.user;
     this.#setPostTimer();
   }
 
@@ -72,7 +74,10 @@ export class Posts {
   }
 
   #render() {
-    const posts = this.#posts.sort((a, b) => b.createdAt - a.createdAt);
+    const posts = this.#posts.sort(
+      (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    );
+
     this.#containerEl.innerHTML = '';
 
     posts.forEach(post => {
@@ -84,15 +89,43 @@ export class Posts {
     })
   }
 
-  async create({ content }) {
+  async create({ content, userId }) {
+    const url = '/api/posts';
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+        userId,
+      })
+    });
+    const {data} = await response.json();
+    
     const post = {
-      id: this.#posts.length,
+      id: data.id,
       author: this.#user.username,
-      createdAt: Date.now(),
-      content
+      createdAt: data.createdAt,
+      content: data.content,
     }
 
     this.#posts.push(post);
+    this.#render();
+  }
+
+  async fetchPosts() {
+    const url = `/api/posts`;
+    const response = await fetch(url);
+    const {data} = await response.json();
+
+    this.#posts = data.map(post => ({
+      id: post.id,
+      author: post.author.username,
+      createdAt: post.createdAt,
+      content: post.content,
+    }));
+
     this.#render();
   }
 }

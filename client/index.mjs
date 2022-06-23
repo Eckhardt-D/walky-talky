@@ -9,28 +9,32 @@ const app = new App(
 )
 
 getUser()
-  .then(user => {
+  .then(async (user) => {
     app.setUser(
       user,
       document.querySelector('*[data-user-name]'),
     );
 
-    app.loading = false;
-
     const posts = new Posts(
-      app.user,
+      app,
       document.querySelector('div[data-posts-container]'),
     );
-
-  
+      
+    await posts.fetchPosts();
+    app.loading = false;
+    
     const talkyForm = new TalkyForm(
       document.querySelector('form[data-post-form]')
     );
     
     talkyForm.onSubmit(async (data) => {
-      await posts.create(data);
+      await posts.create({
+        userId: app.user.id,
+        content: data.content,
+      });
     });
   })
   .catch(error => {
-    app.error(error);
+    console.log(error)
+    // app.error(error); :TODO
   })
