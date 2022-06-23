@@ -8,8 +8,15 @@
   <title>Walky Talky</title>
 </head>
 <body class=" bg-slate-300">
-  <div class="max-w-3xl mx-auto bg-white min-h-screen p-10">
-    <h1 class="text-3xl font-bold">Discussion</h1>
+  <div style="display: block" data-loader class="text-center">
+    <h1 class="text-5xl mt-10">Loading user...</h1>
+  </div>
+
+  <div data-app style="display: none;" class="max-w-3xl mx-auto bg-white min-h-screen p-10">
+    <h1 class="text-3xl font-bold">
+      Discussion
+      <p data-user-name class="text-sm text-gray-600"></p>
+    </h1>
 
     <form data-post-form class="mt-5">
       <section class="flex">

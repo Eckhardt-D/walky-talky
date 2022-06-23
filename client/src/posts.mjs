@@ -4,13 +4,15 @@ export class Posts {
   #postInterval;
   #containerEl;
   #posts = [];
+  #user;
 
-  constructor(containerEl) {
-    if (containerEl == null) {
-      throw new Error('Posts controller requires a container element.')
+  constructor(user, containerEl) {
+    if (containerEl == null || !user) {
+      throw new Error('Posts controller requires a container element and user.')
     }
 
     this.#containerEl = containerEl;
+    this.#user = user;
     this.#setPostTimer();
   }
 
@@ -85,7 +87,7 @@ export class Posts {
   async create({ content }) {
     const post = {
       id: this.#posts.length,
-      author: 'John Doe',
+      author: this.#user.username,
       createdAt: Date.now(),
       content
     }
