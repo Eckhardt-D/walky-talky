@@ -6,6 +6,7 @@ const {Server} = require('socket.io');
 // Route imports
 const userRoutes = require('./routes/users');
 const postRoutes = require('./routes/posts');
+const commentRoutes = require('./routes/comments');
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 // Route definitions
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/comments', commentRoutes);
 
 exports.createServer = (staticPath) => {
   return new Promise((resolve) => {
