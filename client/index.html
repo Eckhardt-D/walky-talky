@@ -14,11 +14,13 @@
     <form data-post-form class="mt-5">
       <section class="flex">
         <input
+          data-form-input
           class="px-2 py-3 border border-slate-300 rounded-md w-10/12 mr-3"
           placeholder="What are your thoughts?"
           type="text"
         >
         <button
+          data-form-submit
           class="
           bg-purple-500
           text-white
@@ -37,19 +39,7 @@
 
     <hr class="my-5"/>
 
-    <section data-post class="mt-5 w-11/12 mx-auto">
-      <header data-post-header class="flex items-center mb-2">
-        <h1 data-author class="font-bold m-0">Rob Hope</h1>
-        <p data-post-created class="text-sm text-gray-600 m-0 mt-0.5 ml-2">45 min ago</p>
-      </header>
-      <main data-post-content class=" text-gray-900 text-sm">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Facilis architecto ipsum, labore atque, itaque nesciunt fugiat, voluptatem fugit hic ad nisi possimus beatae iste doloremque! Delectus, ad ea dolorem maxime ullam modi sint cum perspiciatis beatae a perferendis provident rem eligendi! Ipsam, facere repellendus! Iusto maxime fuga nisi distinctio incidunt.</p>
-      </main>
-      <footer data-post-footer class="flex items-center mt-3">
-        <p class="text-sm font-regular">&#8679; Upvote</p>
-        <p class="text-sm ml-5 font-medium">Reply</p>
-      </footer>
-    </section>
+    <div data-posts-container></div>
   </div>
 
   <script src="./index.mjs" type="module"></script>
