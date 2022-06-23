@@ -1,4 +1,7 @@
+import { createDOMFromHTML } from "./helpers.mjs";
+
 export class Posts {
+  #postInterval;
   #containerEl;
   #posts = [];
 
@@ -8,6 +11,7 @@ export class Posts {
     }
 
     this.#containerEl = containerEl;
+    this.#setPostTimer();
   }
 
   get posts() {
@@ -17,15 +21,15 @@ export class Posts {
   #getMinutesSinceCreateFromCreatedAt(createdAt) {
     const millisSinceCreate = Date.now() - new Date(createdAt).getTime();
     const minutesSinceCreate = (millisSinceCreate / 1000) / 60;
-    const minutesAgo = Math.max(0, minutesSinceCreate);
+    const minutesAgo = Math.floor(Math.max(0, minutesSinceCreate));
     return minutesAgo;
   }
 
-  #generateSafePostHTML({ author, createdAt }) {
+  #generateSafePostHTML({ id, author, createdAt }) {
     const minutes = this.#getMinutesSinceCreateFromCreatedAt(createdAt);
 
     return `
-      <section data-post class="mt-5 w-11/12 mx-auto">
+      <section data-post="${id}" class="mt-5 w-11/12 mx-auto">
         <header data-post-header class="flex items-center mb-2">
           <h1 data-author class="font-bold m-0">${author}</h1>
           <p data-post-created class="text-sm text-gray-600 m-0 mt-0.5 ml-2">${minutes} min ago</p>
@@ -45,21 +49,38 @@ export class Posts {
     `
   }
 
-  #createDOMFromHTML(html) {
-    const div = document.createElement('div');
-    div.innerHTML = html.trim();
-    return div.firstChild;
+  #setPostTimer() {
+    if (this.#postInterval) return;
+
+    this.#postInterval = setInterval(() => {
+      if (this.#posts.length > 0) {
+        this.#posts.forEach(post => {
+          this.#updatePostTime(post.id);
+        });
+      };
+    }, 5000);
+  }
+
+  #updatePostTime(id) {
+    const post = this.#posts.find(post => post.id === id);
+    const postElement = document.querySelector(`*[data-post="${id}"]`);
+    const postTimeContainer = postElement.querySelector('*[data-post-created]');
+    const timeSinceCreated = this.#getMinutesSinceCreateFromCreatedAt(post.createdAt);
+    postTimeContainer.innerText = `${timeSinceCreated} min ago`;
   }
 
   async create({ content }) {
-    this.#posts.push({content});
-
-    const html = this.#generateSafePostHTML({
+    const post = {
+      id: this.#posts.length,
       author: 'John Doe',
       createdAt: new Date().toISOString(),
-    });
+      content
+    }
 
-    const domContent = this.#createDOMFromHTML(html);
+    this.#posts.push(post);
+
+    const html = this.#generateSafePostHTML(post);
+    const domContent = createDOMFromHTML(html);
     const contentContainer = domContent.querySelector('main[data-post-content] > p');
     contentContainer.innerText = content.trim();
 
