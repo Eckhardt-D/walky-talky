@@ -37,7 +37,7 @@ export class Posts {
         <main data-post-content class=" text-gray-900 text-sm">
           <p>
 
-            <!-- Do not insert content here directly -->
+            <!-- DO NOT insert content here directly (xss) -->
           
           </p>
         </main>
@@ -69,21 +69,28 @@ export class Posts {
     postTimeContainer.innerText = `${timeSinceCreated} min ago`;
   }
 
+  #render() {
+    const posts = this.#posts.sort((a, b) => b.createdAt - a.createdAt);
+    this.#containerEl.innerHTML = '';
+
+    posts.forEach(post => {
+      const html = this.#generateSafePostHTML(post);
+      const domContent = createDOMFromHTML(html);
+      const contentContainer = domContent.querySelector('main[data-post-content] > p');
+      contentContainer.innerText = post.content.trim();
+      this.#containerEl.appendChild(domContent);
+    })
+  }
+
   async create({ content }) {
     const post = {
       id: this.#posts.length,
       author: 'John Doe',
-      createdAt: new Date().toISOString(),
+      createdAt: Date.now(),
       content
     }
 
     this.#posts.push(post);
-
-    const html = this.#generateSafePostHTML(post);
-    const domContent = createDOMFromHTML(html);
-    const contentContainer = domContent.querySelector('main[data-post-content] > p');
-    contentContainer.innerText = content.trim();
-
-    this.#containerEl.appendChild(domContent);
+    this.#render();
   }
 }
