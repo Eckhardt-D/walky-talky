@@ -1,6 +1,5 @@
 const Joi = require('joi');
 const {client} = require('../database');
-
 const PostsModel = client.post;
 const UpvoteModel = client.upvote;
 

@@ -3,6 +3,8 @@ import { Posts } from "./src/posts.mjs";
 import { App } from "./src/app.mjs";
 import { getUser } from "./src/user.mjs";
 
+const socket = io();
+
 const app = new App(
   document.querySelector('*[data-app]'),
   document.querySelector('*[data-loader]'),
@@ -17,6 +19,7 @@ getUser()
 
     const posts = new Posts(
       app,
+      socket,
       document.querySelector('div[data-posts-container]'),
     );
       

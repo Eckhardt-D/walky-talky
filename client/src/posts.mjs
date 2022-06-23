@@ -6,22 +6,34 @@ export class Posts {
   #containerEl;
   #posts = [];
   #loading = false;
+  #socket;
   #user;
   #app;
 
-  constructor(app, containerEl) {
+  constructor(app, socket, containerEl) {
     if (containerEl == null || !app) {
       throw new Error('Posts controller requires a container element and user.')
     }
 
     this.#containerEl = containerEl;
+    this.#socket = socket;
     this.#app = app;
     this.#user = app.user;
     this.#setPostTimer();
+    this.#registerSocketEvents();
   }
 
   get posts() {
     return this.#posts;
+  }
+
+  #registerSocketEvents() {
+    this.#socket.on('upvote', () => {
+      // We could be more explicit here
+      // and only set the value of the
+      // relevant post.
+      this.fetchPosts();
+    });
   }
 
   #getMinutesSinceCreateFromCreatedAt(createdAt) {
@@ -181,6 +193,7 @@ export class Posts {
     this.#posts = this.#formatPosts(data);
     this.#render();
     this.#loading = false;
+    this.#socket.emit('upvoted');
   }
 
   async fetchPosts() {
