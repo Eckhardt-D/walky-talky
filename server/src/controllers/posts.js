@@ -27,6 +27,19 @@ class Posts {
           }
         },
       },
+      include: {
+        author: true,
+        comments: {
+          include: {
+            author: true,
+          }
+        },
+        _count: {
+          select: {
+            upvotes: true,
+          },
+        },
+      }
     });
   };
 
