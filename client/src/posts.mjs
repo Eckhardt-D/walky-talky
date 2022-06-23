@@ -106,13 +106,13 @@ export class Posts {
       const upvoteButton = domContent.querySelector('*[data-upvote-btn]');
       const replyButton = domContent.querySelector('*[data-reply-btn]');
       contentContainer.innerText = post.content.trim();
+      this.#containerEl.appendChild(domContent);
 
       // Hide actions for own post.
       if (post.authorId === this.#user.id) {
         replyButton.style.display = 'none';
+        return;
       }
-
-      this.#containerEl.appendChild(domContent);
 
       // Use react component for upvotes
       createComponent(upvoteButton, post, this.#user, this);
