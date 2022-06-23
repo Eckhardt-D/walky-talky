@@ -39,6 +39,28 @@ router.get('/', async (_, res) => {
       data: null,
     })
   }
+});
+
+router.post('/upvote', async (req, res) => {
+  const { postId, authorId, upvoterId } = req.body;
+
+  try {
+    const items = await posts.upvotePost({
+      authorId,
+      upvoterId,
+      postId,
+    });
+
+    res.json({
+      data: items,
+      error: null,
+    })
+  } catch (error) {
+    res.json({
+      error: error.message,
+      data: null,
+    })
+  }
 })
 
 module.exports = router;

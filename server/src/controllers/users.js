@@ -41,6 +41,13 @@ class Users {
     return UserModel.findFirst({
       where: {
         id: randomId
+      },
+      include: {
+        upvotes: {
+          select: {
+            postId: true,
+          }
+        }
       }
     });
   }

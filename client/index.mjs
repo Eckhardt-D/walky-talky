@@ -35,6 +35,6 @@ getUser()
     });
   })
   .catch(error => {
-    console.log(error)
+    console.error(error)
     // app.error(error); :TODO
   })
